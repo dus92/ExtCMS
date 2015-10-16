@@ -1,0 +1,37 @@
+ErrorDocument 404 404.php
+
+<Files ~ "\.(css|js|gif|png)$">
+	allow from all
+</Files>
+
+RewriteEngine On
+#RewriteBase %(DOCUMENT_ROOT)
+
+#RewriteRule ^.htaccess$ - [F]
+#RewriteCond %{HTTP_HOST} ^index.php
+#RewriteRule ^(.*)$ / [R=301,L]
+
+#RewriteCond %{REQUEST_URI} ^/$
+#RewriteRule / index.php [R=permanent,L]
+
+#RewriteCond %{REQUEST_URI} index.s?html$
+#RewriteRule ^(.*/)index.s?html $1 [R=301,L] 
+
+RewriteRule ^news$ index.php?module=iblocks&contid=news [QSA,L]
+RewriteRule ^articles$ index.php?module=iblocks&contid=articles [L]
+
+RewriteRule ^[^\._]+_([^\._]+)-[^\._]+\.html$ index.php?module=iblocks&action=show&item=$1 [L]
+RewriteRule ^articles_(.*)$ index.php?module=iblocks&contid=articles&etc=$1 [L]
+RewriteRule ^register$ index.php?module=user.profile&act=register [L]
+
+RewriteRule ^info_([^_]+)$ index.php?module=iblocks&ibid=$1 [L]
+RewriteRule ^info_([^_]+)_(.*)$ index.php?module=iblocks&ibid=$1&etc=$2 [L]
+RewriteRule ^infocat_([^_]+)_(.*)$ index.php?module=iblocks&catid=$1&etc=$2 [L]
+RewriteRule ^infogroup_([^_]+)_(.*)$ index.php?module=iblocks&ibgid=$1&etc=$2 [L]
+RewriteRule ^(user\.profile|filesdb|feedback|cabinet|shop|instagram)$ index.php?module=$1 [L]
+RewriteRule ^users$ index.php?module=user.list [L]
+RewriteRule ^users_(.*)$ index.php?module=user.list&user=$1 [L]
+RewriteRule ^$ index.php?module=index [QSA,L]
+
+RewriteRule ^([^\._]+)$ index.php?module=iblocks&contid=$1 [L]
+#RewriteRule ^([^\._]+)_(.*)$ index.php?module=iblocks&contid=$1&etc=$2 [L]
