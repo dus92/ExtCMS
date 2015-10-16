@@ -1,0 +1,167 @@
+#i1,#i2,#i3,#div_users,#div_groups,#sel_groups {
+	display: none
+}
+
+#body {
+	font: 12px "Lucida Grande", Sans-Serif;	
+    background-color:#EFEFEF;
+}
+
+#no_groups {
+	font-weight: bold;
+	font-size: 12px;
+	margin-bottom: 2px;
+	margin-top: 2px;
+	padding-left: 3px;
+}
+
+#div_users {
+	/*width: 90%;*/
+	/*height: 100px;*/
+	overflow: auto;
+	border: 1px solid #999;	
+	/*margin-left: 3px;*/
+    margin-top:3px;
+    margin-bottom:3px;
+}
+
+#div_groups {
+	/*width: 200px;*/
+	/*height: 80px;*/
+	overflow: auto;
+	border: 1px solid #999;	
+	/*margin-left: 3px;*/
+    margin-top:3px;
+    margin-bottom:3px;	
+}
+
+#sel_to {
+	margin-left: 3px;
+	margin-top: 3px;
+    margin-bottom: 3px;
+	width: 200px;
+    background-color:#EFEFEF;	
+}
+
+#imail_body {      		
+    width: 100%;        
+}
+
+#imail_text_field {
+	min-height: 150px;
+    max-height: 200px;
+    overflow: auto;
+	padding: 3px;
+    border:  1px solid black;
+    background-color:#EFEFEF;    
+}
+@media not all and (-webkit-min-device-pixel-ratio:0) { #imail_text_field { padding-top:10px; } }
+noindex:-o-prefocus, #imail_text_field { padding-top:10px !important; } 
+
+#imail_text_input {	
+    margin-top: 3px;
+    width:100%;
+    font: normal 8pt Verdana, Arial, Helvetica, sans-serif;
+	border: 1px solid #999;    
+}
+
+#imail_button {		
+    background-color:#EFEFEF;
+    font-weight: bold;
+    width:90px;
+    text-align: center;
+    margin-top:5px;
+}
+
+#clear 
+{
+    background-color:#EFEFEF;
+    font-weight: bold;
+    text-align: center;
+    margin-top:5px;    
+}
+
+#logout_button {
+	float: left;
+	margin: 2px 5px;
+}
+
+.imail_mess_time {
+	font: 10px Verdana, Arial, Helvetica, sans-serif !important;
+	margin: 1px 3px;
+}
+
+.imail_nickname {
+	font-weight: bold;    
+}
+
+.other{
+    color:  #408080;
+}
+
+.imail_post_my{
+	font: 11px Verdana, Arial, Helvetica, sans-serif !important;
+    margin: 1px 3px;
+	color: black;
+}
+@media not all and (-webkit-min-device-pixel-ratio:0) { .imail_post_my { margin-top:-9px; } }
+noindex:-o-prefocus, .imail_post_my { margin-top:-9px !important; } 
+
+.tbl_post_my{
+    font-family: Verdana, Arial, Helvetica, sans-serif !important;
+    font-size: 11px;
+    text-align: left;
+}
+
+.imail_post_other table tr td b{
+	font: 11px Verdana, Arial, Helvetica, sans-serif !important;
+	/*margin: 1px 3px;*/
+	color: #408080;
+    font-weight: bold;        
+}
+.imail_post_other{
+	font: 11px Verdana, Arial, Helvetica, sans-serif !important;
+	margin: 1px 3px; /*color:#161;*/
+	color: #408080;
+}
+
+.p {	
+	padding-left: 5px;	
+	margin: 2px;
+    color: /*#006699*/black;	
+    font: bold 8pt Verdana, Arial, Helvetica, sans-serif;
+}
+
+.p_header{
+    background-color: #006699;
+    color: #FFA34F;
+    font-size: 11px;
+    font-weight: bold;
+    height: 20px;
+    margin-top: 0px;
+	padding-left: 5px;
+	padding-top: 5px;
+	margin-bottom: 2px; 
+    font: Verdana, Arial, Helvetica, sans-serif;  
+    letter-spacing: 0.05em;
+}    
+
+.selector {
+	margin-left: 3px;
+	background-color:#EFEFEF;
+	margin-top: 7px;
+    font: normal 8pt Verdana, Arial, Helvetica, sans-serif;
+}
+#sel_watch{
+    margin: 7px 0px 1px 0px; 
+    background-color:#EFEFEF;
+    font: normal 8pt Verdana, Arial, Helvetica, sans-serif;
+    width: 100%;
+    /*margin-top: 7px;*/
+}
+#div_sel_watch, #div_sel_groups{
+    float: left;
+}
+#div_sel_watch{
+    width: 100%;
+}

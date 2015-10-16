@@ -1,0 +1,175 @@
+.x-tbar-excelbut{
+	background-image: url(img/excel.png);
+}
+.x-tbar-add{
+	background-image: url(img/add.png);
+}
+.x-tbar-addbut{
+	background-image: url(img/user_add.gif);
+}
+.x-tbar-delbut{
+	background-image: url(img/delete.png);
+	width: 16px;
+	height: 16px;
+}
+.x-tbar-delbut.del-but-margin{
+	margin-left: 5px !important;
+}
+.x-tbar-editbut{
+	background-image: url(img/edit.png);
+}
+.msg-icon-success{
+	background-image: url(img/icon-success.png);
+}
+.warden-row  td{
+	background: #DAF4D7;
+}
+.disabled-fields  .x-mask{
+     opacity: 0 !important;
+    -moz-opacity: 0 !important;
+}
+
+@font-face {
+	font-family: 'PFAgoraSansPro-Reg' !important;
+	src: url('PFAgoraSansPro-Reg.ttf') !important; 
+}
+
+.button-pictos{
+    font-family: 'Pictos';
+    font-size:60px;
+    -webkit-font-smoothing:antialiased;
+}
+
+.x-fieldset-header-text{
+	color: #1D5F8F;
+	font-weight: bold;
+}
+
+.frm_docked_background .x-toolbar-footer{
+	background: none !important;
+}
+
+.icon_download{
+	background-image: url(img/download.png);
+	width: 16px;
+	height: 16px;	
+}
+
+
+.gridfiles-row-tip.valid{
+	background-color: #D8EFD1 !important;
+}
+.gridfiles-row-valid .x-grid-td{
+	/*background-color: #D8EFD1 !important;*/
+}
+
+.gridfiles-row-tip.notValid{
+	background-color: #FDE8E8 !important;
+}
+.gridfiles-row-notValid .x-grid-td{
+	/*background-color: #FDE8E8 !important;*/
+	color: red !important;
+}
+.gridfiles-row-notValid .x-grid-td .x-grid-row-checker{
+	/*opacity: 0.5;*/
+}
+
+.btn-chat{
+	width: 40px;
+	height: 40px;
+	background: none;
+	background-image: url(img/chat.png);
+	opacity: 0.7;
+	position: relative;
+	z-index: 1000;	
+}
+.btn-chat:hover{
+	opacity: 1;
+}
+
+/*uploader panel*/
+.ux-mu-status-value {
+	float: right;
+	min-width: 16px;
+	height: 16px;
+	background-repeat: no-repeat;
+	margin: 0 3px 0 2px;
+	/*cursor: pointer;*/
+	overflow: hidden;
+}
+
+.ux-mu-icon-upload-uploading {
+	background-image: url(img/loading.gif) !important;
+}
+
+.ux-mu-icon-upload-uploaded {
+	background-image: url(img/accept.png) !important;
+}
+
+.ux-mu-icon-upload-uploaderror {
+	background-image: url(img/exclamation.png) !important;
+}
+
+
+.browsebutton.x-item-disabled .x-form-item-label{
+	opacity: 1 !important;
+}
+
+.validateFieldSuccess, .validateFieldError{
+	width: 100%;
+	position: relative !important;
+}
+.validateFieldSuccess .x-form-display-field, .validateFieldError .x-form-display-field{
+	font-weight: bold !important;
+	margin: 10px;
+}
+
+.validateFieldSuccess{
+	background-color: #DDECE1;
+}
+.validateFieldError{	
+	background-color: #FFE6E6;
+}
+.validateFieldSuccess .x-form-display-field{
+	color: #0BA612 !important;
+}
+.validateFieldError .x-form-display-field{
+	color: red !important;
+}
+
+
+.icon-error-close, .icon-success-close{
+    cursor: pointer;
+    width: 20px;
+	height: 20px;
+    background-size: cover;
+} 
+
+.icon-error-close:hover, .icon-success-close:hover{
+    opacity: 0.5;
+}
+.icon-error-close:active, .icon-success-close:active{
+    margin: 1px 0px 0px 1px !important;
+    opacity: 1;
+}
+
+.icon-error-close{
+    background-image: url(img/icon-error-close.png);
+}
+.icon-success-close{
+    background-image: url(img/icon-success-close.png);
+}
+
+/*****************/
+/*.x-grid-row-checker, .x-column-header-checkbox .x-column-header-text {
+height: 15px;
+width: 15px;
+background-image: url(images/form/checkbox.png);
+line-height: 15px;
+
+.x-grid-row-checker, .x-column-header-checkbox .x-column-header-text {
+height: 15px;
+width: 15px;
+background-image: url(images/form/checkbox.png);
+line-height: 15px;
+*/
