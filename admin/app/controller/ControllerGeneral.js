@@ -12,19 +12,20 @@ Ext.define('duscms.controller.ControllerGeneral', {
 	
 	views: [
       'duscms.view.general.Config',
-      'duscms.view.MainContent'
+      'duscms.view.MainContent',
+      'duscms.view.general.ManageModules'
     ],
     
-    refs: [
-        {
-            ref: 'siteConfig',
-            selector: 'config'
-        },
-        {
-            ref: 'mainContent',
-            selector: 'mainContent'
-        }
-    ],
+    refs: [{
+        ref: 'siteConfig',
+        selector: 'config'
+    },{
+        ref: 'mainContent',
+        selector: 'mainContent'
+    },{
+        ref: 'manageModules',
+        selector: 'manageModules'
+    }],
     
     init: function() {
 	//	var myMask = new Ext.LoadMask(Ext.getBody(), {msg: 'Загрузка данных...'});

@@ -123,6 +123,22 @@ Ext.define('duscms.controller.ControllerLeftmenu', {
 					}
 				});
 				break;
+            case 'module-dis':
+                ajaxRequest(mainContent, {
+					url: 'getManageModules',
+					success: function(res){
+						//mainContent.setTitle(record.get('name'));
+//						mainContent.down('#mainPanel').removeAll();
+//						mainContent.down('#mainPanel').add(Ext.create('duscms.view.general.Config', {userData: res}));
+//						mainContent.down('#mainSendButton').down('button').on({
+//						  click: function(el){
+//                              me.getController('ControllerGeneral').saveSiteConfig();
+//						  }
+//						});
+						leftmenu.setDisabled(false);
+					}
+				});
+                break;
 			default:
 				leftmenu.setDisabled(false);
 				// items: [Ext.create('iusproject.view.GroupsGrid', false)]    	

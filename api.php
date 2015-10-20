@@ -76,5 +76,10 @@
 			$res = $general->saveSiteConfig($_REQUEST);
 			Response::_SUCCESS("Настройки для сайта успешно сохранены",$res);
 			break;
+        //Основное управление - управление модулями
+        case 'getManageModules':
+            $res = $general->getManageModules();
+            Response::_SUCCESS("Получен список модулей",$res);
+            break;
     }
 ?>
