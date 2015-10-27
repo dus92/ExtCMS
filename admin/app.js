@@ -58,7 +58,8 @@ Ext.application({
 					labelWidth: 105,
                     anchor: '100%'
 				},
-                url: 'api.php?act=login',
+                //url: 'api.php?act=login',
+                url: 'api.php/login/get',
                 timeout: 1800,
 				defaultType: 'textfield',                
 				items: [{	                    

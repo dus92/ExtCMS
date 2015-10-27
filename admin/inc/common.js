@@ -112,7 +112,7 @@ function onSubmitForm(f, config){
 		myMask.show();
 	
 	Ext.Ajax.request({
-		url: 'api.php?act='+config.url,
+		url: 'api.php/act/'+config.url,//'api.php?act='+config.url,
 		method:'POST',
 		params: values,
 		success:  function(response, opts){							
