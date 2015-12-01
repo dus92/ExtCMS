@@ -14,8 +14,9 @@ Ext.define('duscms.view.MainContent', {
     initComponent: function(){
         var me = this;
         var myMask = new Ext.LoadMask(Ext.getBody(), {msg: 'Загрузка данных...'});        
-        var store = createStore('ModelGeneralInfo', {
-           action: 'getInfo' 
+        var store = createStore({
+           model: 'ModelGeneralInfo',
+           proc: 'getInfo'
         });
                 
         if(store){ //загружаем общую инфу о движке, сервере, версии php ...
@@ -110,7 +111,7 @@ Ext.define('duscms.view.MainContent', {
 						    	},
 								items: [{
 									xtype: 'form',
-									url: 'api.php?act=sendRemarks',
+									url: 'api.php/sendRemarks/save',
 									border: false,
 									id: 'frm_remarks',
 									cls: 'frm_docked_background',
@@ -135,7 +136,7 @@ Ext.define('duscms.view.MainContent', {
    									buttons: [{
    										text: rec.get('text').send,
    										handler: function(btn){
-   											me.fireEvent('sendRemarksButtonClick', rec.get('remarks'));										
+   											me.fireEvent('sendRemarksButtonClick', rec.get('remarks'));
    										}
 							   		}]
 								}]
@@ -177,13 +178,21 @@ Ext.define('duscms.view.MainContent', {
                 itemId: 'mainSendButton',
                 hidden: true,
                 buttonAlign: 'center',
+                eventName: null,
                 layout: {
                     type: 'hbox',
                     pack: 'center',
                     align: 'middle'
                 },
                 buttons: [{
-                    text: 'Отправить'
+                    text: 'Отправить',
+                    onButtonClick: function(event){
+                        var me = this;
+                        me.eventName = event;
+                    },
+                    handler: function(el){
+                        me.fireEvent(el.eventName);
+                    }
                 }]
             }];
         }

@@ -1,7 +1,8 @@
 <?php
 class System {
-    public function check_necessary_params($params){
-        foreach ($params as $key => $value){
+    public function check_necessary_params($required_params, $params=null){
+        foreach ($required_params as $key => $value){
+           // if (!isset($params[$value]))
             if (!isset($_REQUEST[$value]))
                 Response::_ERROR ("Required parameter was not found: ".$value);
         }

@@ -102,42 +102,118 @@ Ext.define('duscms.controller.ControllerLeftmenu', {
     	var leftmenu = me.getLeftmenu();
     	
     	leftmenu.setDisabled(true);
-        mainContent.down('#mainSendButton').show();
         if(mainContent.down('#validateMessage'))
             mainContent.remove('validateMessage');
     	
 		switch(record.get('module')){
 			case 'config':
 				ajaxRequest(mainContent, {
-					url: 'getSiteSettingsData',
+					url: 'getSiteSettingsData/store',
 					success: function(res){
 						mainContent.setTitle(record.get('name'));
 						mainContent.down('#mainPanel').removeAll();
 						mainContent.down('#mainPanel').add(Ext.create('duscms.view.general.Config', {userData: res}));
-						mainContent.down('#mainSendButton').down('button').on({
-						  click: function(el){
-                              me.getController('ControllerGeneral').saveSiteConfig();
-						  }
-						});
+						mainContent.down('#mainSendButton').down('button').onButtonClick('saveSiteConfig');
+                        
 						leftmenu.setDisabled(false);
+                        
+                        mainContent.down('#mainSendButton').show();
 					}
 				});
 				break;
             case 'module-dis':
-                ajaxRequest(mainContent, {
-					url: 'getManageModules',
-					success: function(res){
-						//mainContent.setTitle(record.get('name'));
-//						mainContent.down('#mainPanel').removeAll();
-//						mainContent.down('#mainPanel').add(Ext.create('duscms.view.general.Config', {userData: res}));
-//						mainContent.down('#mainSendButton').down('button').on({
-//						  click: function(el){
-//                              me.getController('ControllerGeneral').saveSiteConfig();
-//						  }
-//						});
-						leftmenu.setDisabled(false);
-					}
+				var store = createStore({
+		            proc: 'manageModules',
+                    autoLoad: true,
+                    model: function(){
+                        return [{
+                           name: 'id',
+                           type: 'string'   
+                        },{
+                           name: 'title',
+                           type: 'string' 
+                        },{
+                           name: 'copyright',
+                           type: 'string' 
+                        },{
+                           name: 'rights',
+                           type: 'object' 
+                        },{
+                            name: 'checked',
+                            type: 'bool'
+                        }];
+                    }
 				});
+                
+                mainContent.setTitle(record.get('name'));
+				mainContent.down('#mainPanel').removeAll();
+				mainContent.down('#mainPanel').add(Ext.create('duscms.view.general.ManageModules', {store: store}));
+                
+				leftmenu.setDisabled(false);
+                mainContent.down('#mainSendButton').hide();
+                break;
+            case 'navigation':
+                ajaxRequest(mainContent, {
+					url: 'navigation/store',
+					success: function(res){
+				        mainContent.setTitle(record.get('name'));
+        				mainContent.down('#mainPanel').removeAll();
+        				mainContent.down('#mainPanel').add(Ext.create('duscms.view.general.NavigationPanel', {result: res}));
+                        mainContent.down('#mainSendButton').down('button').onButtonClick('saveNavigation');
+                        
+                        leftmenu.setDisabled(false);
+                        mainContent.down('#mainSendButton').show();	   
+					}
+                });
+                break;
+            case 'menus':
+                var storeCurrent = createTreeStore({
+		            proc: 'getCurrentMenus',
+                    autoLoad: true,
+                    model: function(){
+                        return [{
+                            name: 'id',
+                            type: 'string'
+                        },{
+                            name: 'name',
+                            type: 'string'
+                        },{
+                            name: 'isParent',
+                            type: 'bool'
+                        },{
+                            name: 'ucm',
+                            type: 'bool'
+                        }]
+                    }
+				}, true);
+                
+                var storeUnused = createStore({
+		            proc: 'getUnusedMenus',
+                    autoLoad: true,
+                    model: function(){
+                        return [{
+                            name: 'id',
+                            type: 'string'
+                        },{
+                            name: 'name',
+                            type: 'string'
+                        },{
+                            name: 'isParent',
+                            type: 'bool'
+                        },{
+                            name: 'ucm',
+                            type: 'bool'
+                        }]
+                    }
+				}, true);
+                
+                mainContent.setTitle(record.get('name'));
+				mainContent.down('#mainPanel').removeAll();
+				mainContent.down('#mainPanel').add(Ext.create('duscms.view.general.Menus', {storeCurrent: storeCurrent, storeUnused: storeUnused}));
+                
+				leftmenu.setDisabled(false);
+                mainContent.down('#mainSendButton').show();
+                mainContent.down('#mainSendButton').down('button').onButtonClick('saveMenus');
                 break;
 			default:
 				leftmenu.setDisabled(false);

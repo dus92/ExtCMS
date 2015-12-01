@@ -288,7 +288,7 @@ class rcms_user extends rcms_access {
              load his profile to object.
      */
 	function initializeUser($skipcheck = false){ // TODO: rewrite
-		$this->users_cache = new rcms_user_cache();
+        $this->users_cache = new rcms_user_cache();
 
 		$this->data['apf'] = parse_ini_file(CONFIG_PATH . 'users.fields.ini');
 		// Enter access levels for fields here
@@ -330,7 +330,7 @@ class rcms_user extends rcms_access {
 		$this->user['nickname'] = hcms_htmlsecure($this->user['nickname']);
 
 		// If user cookie is not present we exiting without -error
-		if(empty($_COOKIE[$this->cookie_user])) {
+        if(empty($_COOKIE[$this->cookie_user])) {
 			$this->logged_in = false;
 			return true;
 		}
@@ -341,12 +341,14 @@ class rcms_user extends rcms_access {
 			// If this cookie is invalid - we exiting destroying cookie and exiting with error
 			if(sizeof($cookie_data) != 2){
 				setcookie($this->cookie_user, null, time() - 3600);
-				return false;
+                echo '2';
+                return false;
 			}
 			// Now we must validate user's data
 			if(!$this->checkUserData($cookie_data[0], $cookie_data[1], 'user_init', true, $this->user)){
 				setcookie($this->cookie_user, null, time() - 3600);
 				$this->logged_in = false;
+                echo '3';
 				return false;
 			}
 		}
@@ -362,6 +364,7 @@ class rcms_user extends rcms_access {
 		if($userdata == false){
 			setcookie($this->cookie_user, null, time() - 3600);
 			$this->logged_in = false;
+            echo '4';
 			return false;
 		}
 		$this->user = $userdata;
@@ -463,7 +466,7 @@ class rcms_user extends rcms_access {
      * @desc This function log out user from system and destroys his cookie.
      */
 	function logOutUser(){
-		if($this->logged_in){
+        if($this->logged_in){
 			rcms_log_put('Notification', $this->user['username'], 'Logged out');
 			setcookie($this->cookie_user, '', time()-3600);
 			$_COOKIE[$this->cookie_user] = '';            

@@ -1,5 +1,4 @@
 <?php
-include_once(CONFIG_PATH.'config.php');
 include_once('sql.php');
 	
 class rmbdJson extends rmbdSql 
@@ -27,11 +26,10 @@ class rmbdJson extends rmbdSql
 		}
 		if ($this->format) die('{"success":false, "msg":'.$this->getJSON($message).'}'); else die($message);		
 	}
-	public function __construct($method = 'POST')
+	public function __construct($system, $config, $method = 'POST')
     {        
         ini_set('display_errors', false);
-        
-        
+               
   		////////////////////from jservice begin////////////////////
 		
 		$config['log_fileName'] = $this->logDir.'json_log.txt';//имя файла для логов
@@ -72,13 +70,81 @@ class rmbdJson extends rmbdSql
 		//Проверяем наличие сессии
 		//if(!in_array($this->procName,array('_p_authorization_get','_p_changepassword_get','_p_files_get')) && $this->paramValueGet('sessionId')=='') $this->handleError('Не удалось получить сессию');
 		
-		
         //Подключаемся к БД
-		//$this->connect($this->config['db']);
-		$func=$this->action.'_before';
-		$this->$func();
-		
-		//$this->getProcParams();		
+		$this->connect($this->config['db']);
+//		$func=$this->action.'_before';
+//		$this->$func();
+
+        $func=$this->procName.'_before';
+        $this->$func();
+        
+        $sys = new System();
+        $auth = new Auth();
+        $rights = new Rights();
+        $general = new General();
+        $user = new rcms_user();
+        
+        switch($this->procNameOrig){
+            case 'modules':
+                $res = $rights->getModules();
+                Response::_SUCCESS("Получены доступные модули",$res);
+                break;
+            case 'getInfo': //получение общей информации о cms
+                $res = $general->getInfo();
+                Response::_SUCCESS("Получены общая информация о cms",$res);
+                break;
+            case 'sendRemarks': //отправка сообщения другим администраторам
+                $req_params = array('remarks');
+                $sys->check_necessary_params($req_params);
+                $res = $general->sendRemarks($params['remarks']);
+                Response::_SUCCESS("Сообщение администраторам успешно отправлено");
+                break;
+  		    case 'getSiteSettingsData': //настройка сайта
+                $res = $general->getSiteSettingsData();
+                Response::_SUCCESS("Получены данные по настройке сайта",$res);
+      		case 'siteConfig': //сохранение параметров конфигурации сайта (config.ini)
+                $res = $general->saveSiteConfig($_REQUEST);
+    			Response::_SUCCESS("Настройки для сайта успешно сохранены",$res);
+    			break;
+            //управление модулями    
+            case 'manageModules': //управление модулями
+                $res = $general->getManageModules();
+                Response::_SUCCESS("Получены модули",$res);
+                break;
+            case 'switchModuleState': //включение/отключение модуля
+                $req_params = array('moduleId', 'disabled');
+                $sys->check_necessary_params($req_params);
+                $res = $general->switchModuleState($params['moduleId'], $params['disabled']);
+                Response::_SUCCESS("Модуль ".($params['disabled']?'отключен':'включен'));
+                break;
+            //Панель навигации
+            case 'navigation': //Панель навигации
+                $res = $general->getNavigation();
+                Response::_SUCCESS("Получена информация для панели навигации",$res);
+                break;
+            case 'saveNavigation': //Панель навигации
+                $req_params = array('urls', 'names');
+                $sys->check_necessary_params($req_params);
+                $res = $general->saveNavigation($_REQUEST);
+                Response::_SUCCESS("Информация для панели навигации успешно сохранена",$res);
+                break;
+            //Модули меню
+            case 'getCurrentMenus':
+                $res = $general->getCurrentMenus();
+                Response::_SUCCESS("Получены модули меню",$res, true);
+                break;
+            case 'getUnusedMenus':
+                $res = $general->getUnusedMenus();
+                Response::_SUCCESS("Получены модули меню",$res);
+                break;
+            case 'saveCurrentMenus':
+                $req_params = array('menu');
+                $sys->check_necessary_params($req_params);
+                $res = $general->saveCurrentMenus($_REQUEST['menu']);
+                Response::_SUCCESS("Модули меню успешно сохранены",$res);
+        }
+        
+		$this->getProcParams();
     }
    	private function _detect_uri()//Функция разбора url
 	{
@@ -318,16 +384,13 @@ class rmbdJson extends rmbdSql
 	public function save()//Функция сохранения
 	{
 		$query = $this->queryProc();
-		
 
-		if ($result = $this->db->query($query))
-		{		
+		if ($result = $this->db->query($query)){
 			$row = $result->fetch_assoc();
 			
-			if (is_numeric($row['success']))
-			{
-				if ($row['success']==1)
-				{
+			if (is_numeric($row['success'])){
+				
+                if ($row['success']==1){
 					unset($row['success']);
 
 					$this->save_after($row);
@@ -346,8 +409,7 @@ class rmbdJson extends rmbdSql
 					if(count($row)>0) echo $this->getJSON(array('success' => true, 'data' => $row));
 					else echo $this->getJSON(array('success' => true));
 				}
-				else
-				{
+				else{
 					if($row['msg']) $this->handleError($row['msg']);
 					else $this->handleError('Ошибка при получении данных',$this->db->error,true);
 				}

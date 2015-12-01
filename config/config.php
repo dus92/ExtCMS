@@ -1,6 +1,5 @@
 <?php
 //require_once('/.bknconfig/mbdConfig.php');
-
 $config = array();
 
 //$config['dir']=str_replace(array('/rmbd/','/data'),'',$_SERVER['DOCUMENT_ROOT']);
@@ -8,16 +7,17 @@ $config = array();
 //require_once('/.bknconfig/'.$config['dir'].'.php');
 
 //Межагентская база
-$config['server'] = 'localhost';
-$config['database'] = 'db_extcms';
-$config['username'] = 'root';
-$config['password'] = 'root';
-$config['port'] = 3306;
+$config['db']['server'] = 'localhost';
+$config['db']['database'] = 'extcms_db';
+$config['db']['username'] = 'root';
+$config['db']['password'] = 'root';
+$config['db']['port'] = 3306;
 
 // полный путь к каталогу файлового хранилища
 $config['temp_dir'] = str_replace('/data','',$_SERVER['DOCUMENT_ROOT']).'/images/tmp/'; 
 $config['img_dir'] = str_replace('/data','',$_SERVER['DOCUMENT_ROOT']).'/images/';
-$config['log'] = ADMIN_PATH.'logs/';
+$config['log'] = DATA_PATH.'logs/';
+$config['log_fileName'] = DATA_PATH.'logs/db_log.txt';
 
 function logWrite($msg)
 {

@@ -1,66 +1,80 @@
 <?php
-    define('RCMS_ROOT_PATH', './');
-    require_once('common.php');
-    //require_once(ADMIN_PATH . 'src/jservice.php');
-    require_once(ADMIN_PATH.'src/json.php');
-    $json = new rmbdJson;
-    
-    header('Content-Type: application/json; charset=utf-8');
-    
-    $categories = rcms_scandir(ADMIN_PATH . 'modules', '', 'dir');
-	$MODULES = array();
-	foreach ($categories as $category){
-		if(file_exists(ADMIN_PATH . 'modules/' . $category . '/module.php')){
-			include_once(ADMIN_PATH . 'modules/' . $category . '/module.php');
-		}
-	}
-    
-    $userRights = &$system->rights;
-    $root   = &$system->root;
-    $files_arr = $_FILES;
-    
-    //require_once(SYSTEM_MODULES_PATH.'api.users.php');
-    require_once(ADMIN_PATH.'src/response.php');
-    require_once(ADMIN_PATH.'src/system.php');
-    require(ADMIN_PATH.'src/connection.php'); 
-    require_once(ADMIN_PATH.'src/auth.php');
-    require_once(ADMIN_PATH.'src/rights.php');
-    
-    require_once(ADMIN_PATH.'src/general.php');
-    
-    //die();
-    //if (!isset($_REQUEST['act']))
-      // Response::_ERROR ("Could not find action parameter");
-    //$action = $_REQUEST['act'];
-    $sys = new System();    
+define('RCMS_ROOT_PATH', './');
+require_once ('common.php');
+//require_once(ADMIN_PATH . 'src/jservice.php');
+include_once(CONFIG_PATH.'config.php');
+
+//header('Content-Type: application/json; charset=utf-8');
+
+$categories = rcms_scandir(ADMIN_PATH . 'modules', '', 'dir');
+$MODULES = array();
+foreach ($categories as $category) {
+    if (file_exists(ADMIN_PATH . 'modules/' . $category . '/module.php')) {
+        include_once (ADMIN_PATH . 'modules/' . $category . '/module.php');
+    }
+}
+
+$userRights = &$system->rights;
+$root = &$system->root;
+$files_arr = $_FILES;
+
+//require_once(SYSTEM_MODULES_PATH.'api.users.php');
+require_once (ADMIN_PATH . 'src/response.php');
+require_once (ADMIN_PATH . 'src/system.php');
+require (ADMIN_PATH . 'src/connection.php');
+require_once (ADMIN_PATH . 'src/auth.php');
+require_once (ADMIN_PATH . 'src/rights.php');
+require_once (ADMIN_PATH . 'src/general.php');
+
+
+if (isset($_REQUEST['act'])){
+    //Response::_ERROR ("Could not find action parameter");
+    $action = $_REQUEST['act'];
+
+    $sys = new System();
     $auth = new Auth();
-    $rights = new Rights();
-    $general = new General();
-    $user = new rcms_user();
     
-    try {
-        call_user_func(array($json,  $json->action));
+    switch ($action) {
+        case 'login': //авторизация пользователя
+            $params = array('username','password');
+            $sys->check_necessary_params($params);
+            $auth->login($_REQUEST['username'],$_REQUEST['password'], isset($_REQUEST['remember'])?$_REQUEST['remember']:false);
+            Response::_SUCCESS("Пользователь успешно вошел в систему",$res);
+            break;
+        case 'logout': //выход из системы
+            $auth->logout();
+            break;
     }
-    catch( Exception $e ) {
-    	$json->logWrite('Ошибка. '.$e->getMessage());
-        die('{success:false, msg:'.json_encode($e->getMessage()).'}'); 
-    }
-    
+    die();
+}
+
+
+require_once (ADMIN_PATH . 'src/json.php');
+$json = new rmbdJson($system, $config);
+
+try {
+    call_user_func(array($json, $json->action));
+}
+catch (exception $e) {
+    $json->logWrite('Ошибка. ' . $e->getMessage());
+    die('{success:false, msg:' . json_encode($e->getMessage()) . '}');
+}
+
 //    switch ($action) {
 //        default:
 //            Response::_ERROR("Unknown action");
 //            break;
 //
-//        case 'login': //авторизация пользователя           
+//        case 'login': //авторизация пользователя
 //            $params = array('username','password');
-//            $sys->check_necessary_params($params);            
+//            $sys->check_necessary_params($params);
 //            $auth->login($_REQUEST['username'],$_REQUEST['password'], isset($_REQUEST['remember'])?$_REQUEST['remember']:false);
-//            //Response::_SUCCESS("Пользователь успешно вошел в систему",$res);                        
+//            //Response::_SUCCESS("Пользователь успешно вошел в систему",$res);
 //            break;
-//        case 'logout': //выход из системы            
+//        case 'logout': //выход из системы
 //            $auth->logout();
 //            break;
-//        case 'getModules': //выход из системы            
+//        case 'getModules': //выход из системы
 //            $res = $rights->getModules();
 //            Response::_SUCCESS("Получены доступные модули",$res);
 //            break;
@@ -95,4 +109,5 @@
 //            Response::_SUCCESS("Получен список модулей",$res);
 //            break;
 //    }
+
 ?>

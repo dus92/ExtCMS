@@ -20,11 +20,21 @@ class Response {
      * error_text - текст сообщения
      * data - допольнительные данные
      */
-    public static function _SUCCESS($success_text, $data = false){
+    public static function _SUCCESS($success_text, $data = false, $isTree = false){
         $arr = Array();
-        $arr['success'] = true;
+        if(!$isTree)
+            $arr['success'] = true;
+        
         if ($data){
-            $arr['data'] = $data;
+            if($isTree){
+                $arr = $data;
+                echo json_encode($arr);
+                die();
+            }
+            else{
+                $arr['data'] = $data;
+            }
+                
             $arr['total'] = count($data);
         }
         $arr['msg'] = $success_text;

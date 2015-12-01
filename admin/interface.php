@@ -26,6 +26,7 @@ if (!empty($arr_user['hidechat']))
         <link rel="stylesheet" href="<?RCMS_ROOT_PATH?>css/main.css" />
         <script src="<?RCMS_ROOT_PATH?>modules/js/jquery.js"></script>
         <script src="<?RCMS_ROOT_PATH?>admin/ext-all.js"></script>
+        <script src="<?RCMS_ROOT_PATH?>admin/inc/fields.js"></script>
         <script src="<?RCMS_ROOT_PATH?>admin/inc/common.js"></script>
         <script type="text/javascript" src="<?RCMS_ROOT_PATH?>admin/app.js"></script>
     </head>

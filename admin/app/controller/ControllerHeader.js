@@ -48,10 +48,7 @@ Ext.define('duscms.controller.ControllerHeader', {
                     if (state == 'ok'){
                         myMask.show();      
                         Ext.Ajax.request({
-                            url: 'api.php',
-                            params: {				
-				                act: 'logout'
-                            },
+                            url: 'api.php?act=logout',
                             success: function(response){                                
                                 location.reload();
                                 myMask.destroy();
@@ -76,8 +73,9 @@ Ext.define('duscms.controller.ControllerHeader', {
             mainContent.remove('validateMessage');
 		
 		var myMask = new Ext.LoadMask(mainContent, {msg: 'Загрузка данных...'});        
-        var store = createStore('ModelGeneralInfo', {
-           action: 'getInfo' 
+        var store = createStore({
+           model: 'ModelGeneralInfo',
+           proc: 'getInfo' 
         });
         myMask.show();
                 
@@ -173,7 +171,7 @@ Ext.define('duscms.controller.ControllerHeader', {
 						    	},
 								items: [{
 									xtype: 'form',
-									url: 'api.php?act=sendRemarks',
+									url: 'api.php/sendRemarks/save',
 									border: false,
 									id: 'frm_remarks',
 									cls: 'frm_docked_background',

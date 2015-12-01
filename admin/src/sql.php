@@ -36,29 +36,36 @@ class rmbdSql
 		if($exit) die();
 	}
 	public function connect($config)//Подключаемся к БД
-	{		
+	{
         $this->db = new mysqli($config['server'], $config['username'], $config['password'], $config['database'], $config['port']);
 							   
-        if ($this->db->connect_error) $this->logWrite('Connect Error ('.$this->db->connect_errno.')'.$this->db->connect_error);
+        if ($this->db->connect_error){
+            die('Connect Error');
+            $this->logWrite('Connect Error ('.$this->db->connect_errno.')'.$this->db->connect_error);   
+        }
 		
 		$this->db->set_charset("utf8");	
 	}
 	public function getProcParams() //Получаем параметры процедуры
 	{
-		$this->paramsSql = '';
+        $this->paramsSql = '';
 		
 		$query="SELECT name, type, valueMin, valueMax, length, required, `default` FROM s_procparams WHERE procName='$this->procName';";
-
-		if ($result = $this->db->query($query))
-		{		
+            
+		if ($result = $this->db->query($query)){
 			while($row = $result->fetch_assoc()) $this->paramGet($row['name'], $row['type'], $row['valueMin'], $row['valueMax'], $row['length'], $row['required'], $row['default']);
 			
 			$result->close();			
 		}
-		else $this->logWrite("Errormessage: ".$this->db->error);
+		else{
+            $this->logWrite("Errormessage: ".$this->db->error); 
+		}
 	}
 	public function queryProc($pager = false)
-	{		
+	{		   
+        
+        //$query = "SELECT DATABASE();";
+        //$query = 'SELECT username FROM rcms_users';
 		$query = "CALL ".$this->procName."(".$this->paramsSql.");";
 		$this->lastQuery=$query;
 		$this->logWrite($query, false);
@@ -73,7 +80,7 @@ class rmbdSql
 		}
 		
 		$this->db=false;
-    }	
+    }
 	
 	public function __call($method,$params){
 		if (file_exists(dirname(__FILE__).'/php/'.$this->procNameOrig.'_'.$method.'.php')){

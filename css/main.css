@@ -160,6 +160,19 @@
     background-image: url(img/icon-success-close.png);
 }
 
+.icon-edit{
+    background-image: url(icons/edit.png);
+}
+.icon-delete{
+    background-image: url(icons/delete.png);
+}
+.icon-accept{
+    background-image: url(icons/accept.png);
+}
+.icon-cancel{
+    background-image: url(icons/cancel.png);
+}
+
 /*****************/
 /*.x-grid-row-checker, .x-column-header-checkbox .x-column-header-text {
 height: 15px;

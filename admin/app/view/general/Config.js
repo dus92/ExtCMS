@@ -191,7 +191,7 @@ Ext.define('duscms.view.general.Config', {
         me.items = [{
        		xtype: 'form',
        		itemId: 'configForm',
-       		url: 'api.php?act=saveSiteConfig',
+       		url: 'api.php/siteConfig/save',
        		cls: 'frm_docked_background',
        		title: false,
        		border: false,

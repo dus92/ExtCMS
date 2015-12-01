@@ -59,9 +59,9 @@ Ext.application({
                     anchor: '100%'
 				},
                 //url: 'api.php?act=login',
-                url: 'api.php/login/get',
+                url: 'api.php?act=login',
                 timeout: 1800,
-				defaultType: 'textfield',                
+				defaultType: 'textfield',
 				items: [{	                    
                     xtype: 'textfield',
                     margin: '5',
@@ -69,7 +69,7 @@ Ext.application({
                     fieldLabel: 'Логин',
                     name: 'username',
                     itemId: 'email',
-                    blankText: 'Необходимое поле',                    
+                    blankText: 'Необходимое поле',
                     afterLabelTextTpl: required,
                     allowBlank: false,
                     //value: LOGGED_IN,
@@ -159,8 +159,9 @@ Ext.application({
     showViewport: function(){
         var me = this;
         Ext.Ajax.request({
-            url: 'api.php?act=getModules',
-            method: 'POST',                    
+            //url: 'api.php?act=getModules',
+            url: 'api.php/modules/get',
+            method: 'POST',
             success: function(response){
                 var res = Ext.JSON.decode(response.responseText);
                 if(res.success && res.data.length > 0){                            

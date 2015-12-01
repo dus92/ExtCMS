@@ -71,7 +71,7 @@ function ajaxRequest(panel, config, hideMask){
 	}
 	
 	Ext.Ajax.request({
-		url: 'api.php?act='+config.url,
+		url: 'api.php/'+config.url,
 		method:'POST',
 		params: config.params,
 		success:  function(response, opts){							
@@ -102,7 +102,7 @@ function ajaxRequest(panel, config, hideMask){
 
 //функция отправки данных формы
 function onSubmitForm(f, config){
-	if(f.xtype !== 'form'){
+	if(!f.getForm){
 		Ext.Msg.error('Ошибка', 'Компонент не является формой!');
 		return false;
 	}
@@ -110,9 +110,15 @@ function onSubmitForm(f, config){
 	var values = f.getValues();
 	var myMask = new Ext.LoadMask(f, {msg: 'Обработка данных...'});
 		myMask.show();
+        
+    if(!f.isDirty()){
+        myMask.hide();
+        validateFormMsg(config.vMsgForm||f, 'Поля формы не были изменены!', 0);
+        return false;
+    }
 	
 	Ext.Ajax.request({
-		url: 'api.php/act/'+config.url,//'api.php?act='+config.url,
+		url: 'api.php/'+config.url+'/save',//'api.php?act='+config.url,
 		method:'POST',
 		params: values,
 		success:  function(response, opts){							
@@ -148,45 +154,99 @@ function onSubmitForm(f, config){
 }
 
 //формирование стора по заданной модели
-function createStore(model, config){
-    if(model){
-        var start = config.pager ? 'start' : false;
-        var limit = config.pager ? 'limit' : false;
-        var store = Ext.create('Ext.data.Store', {
-            storeId: 'allowedModulesStore',
-            model: 'duscms.model.' + model,
-            groupField: config.groupField ? config.groupField : false,
-            pageSize: config.pageSize ? config.pageSize : false,
-            autoLoad: config.autoLoad ? config.autoLoad : false,
-            proxy: {
-                type: 'ajax',
-        		url: 'api.php',
-                noCache: config.noCache ? config.noCache : false,
-                limitParam: limit,
-                startParam: start,
-                pageParam: config.pager ? 1 : false, 
-        		extraParams: {
-        			act: config.action
-        		},
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                },
-                actionMethods: {
-			        create: 'POST',
-			        destroy: 'DELETE',
-			        read: 'POST',
-			        update: 'POST'
-			    }
+function createStore(config){
+    var start = config.pager ? 'start' : false;
+    var limit = config.pager ? 'limit' : false;
+    var action = config.action || 'store';
+    
+    config.model = config.model || function(){
+        return [{
+            name: 'id',
+            type: 'string'
+        },{
+            name: 'name',
+            type: 'string'
+        }];
+    };
+    
+    var store = Ext.create('Ext.data.Store', {
+        model: typeof(config.model) != 'function' ? ('duscms.model.' + config.model) : Ext.define(Ext.id()+'_model', {
+            extend: 'Ext.data.Model',
+            fields: config.model()
+        }),
+        groupField: config.groupField ? config.groupField : false,
+        pageSize: config.pageSize ? config.pageSize : false,
+        autoLoad: config.autoLoad ? config.autoLoad : false,
+        proxy: {
+            type: 'ajax',
+    		url: 'api.php/'+config.proc + '/' + action,
+            noCache: config.noCache ? config.noCache : false,
+            limitParam: limit,
+            startParam: start,
+            pageParam: config.pager ? 1 : false,
+            reader: {
+                type: 'json',
+                root: 'data'
             },
-            storeId: config.storeId ? config.storeId : 'Store' + model.substr(5) 
-        });
-        return store;
-    }
-    else
-        return false;
-        //TODO 
-        //обработать случай, когда не задана модель (добавить возможность создания модели в ф-и)
+            actionMethods: {
+		        create: 'POST',
+		        destroy: 'DELETE',
+		        read: 'POST',
+		        update: 'POST'
+		    }
+        },
+        storeId: Ext.id()+'_autoCreatedStore'
+    });
+    return store;
+    
+}
+
+function createTreeStore(config){
+    var action = config.action || 'store';
+    
+    config.model = config.model || function(){
+        return [{
+            name: 'id',
+            type: 'string'
+        },{
+            name: 'name',
+            type: 'string'
+        }];
+    };
+    
+    var store = Ext.create('Ext.data.TreeStore', {
+        model: typeof(config.model) != 'function' ? ('duscms.model.' + config.model) : Ext.define(Ext.id()+'_model', {
+            extend: 'Ext.data.Model',
+            fields: config.model()
+        }),
+        autoLoad: config.autoLoad ? config.autoLoad : false,
+        folderSort: false,
+        autoDestroy: true,
+        root: {
+            loaded: true,
+            expanded: true
+        },
+        proxy: {
+            type: 'ajax',
+    		url: 'api.php/'+config.proc + '/' + action,
+            noCache: config.noCache ? config.noCache : false,
+            reader: {
+                type: 'json',
+                //root: 'data',
+                messageProperty:"msg",
+				idProperty: 'id'
+            },
+            actionMethods: {
+		        create: 'POST',
+		        destroy: 'POST',
+		        read: 'POST',
+		        update: 'POST'
+		    }
+        },
+        storeId: Ext.id()+'_autoCreatedStore'
+    });
+    return store;
+    
 }
 
 

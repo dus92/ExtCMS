@@ -10,7 +10,7 @@ class Rights
       $ret_arr = array();
       $navigation = array();
       $j = 0;
-      
+            
       foreach($MODULES as $category => $blockdata) {
         //$navigation[$category] = array();
         
